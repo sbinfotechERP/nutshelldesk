@@ -69,7 +69,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
-      - name: Replace engine with rustdesk custom flutter engine
+      - name: Replace engine with nutshelldesk custom flutter engine
         run: |
           flutter doctor -v
           flutter precache --windows
@@ -141,10 +141,10 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           pushd ./libs/portable
-          python3 ./generate.py -f ../../flutter/build/windows/runner/Release/ -o . -e ../../flutter/build/windows/runner/Release/rustdesk.exe
+          python3 ./generate.py -f ../../flutter/build/windows/runner/Release/ -o . -e ../../flutter/build/windows/runner/Release/nutshelldesk.exe
           popd
           mkdir -p ./SignOutput
-          mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          mv ./target/release/nutshelldesk-portable-packer.exe ./SignOutput/nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
 
       - name: Sign rustdesk self-extracted file
         uses: GermanBluefox/code-sign-action@v7
@@ -164,7 +164,7 @@ jobs:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            ./SignOutput/rustdesk-*.exe
+            ./SignOutput/nutshelldesk-*.exe
 
   # The fallback for the flutter version, we use Sciter for 32bit Windows.
   build-for-windows-sciter:
@@ -227,7 +227,7 @@ jobs:
           sed -i 's/branch = "dyn"/branch = "dyn_x86"/g' ./Cargo.toml
           cargo build --features inline --release --bins
           mkdir -p ./Release
-          mv ./target/release/rustdesk.exe ./Release/rustdesk.exe
+          mv ./target/release/nutshelldesk.exe ./Release/nutshelldesk.exe
           curl -LJ -o ./Release/sciter.dll https://github.com/c-smile/sciter-sdk/raw/master/bin.win/x32/sciter.dll
           echo "output_folder=./Release" >> $GITHUB_OUTPUT
 
@@ -263,10 +263,10 @@ jobs:
         run: |
           pushd ./libs/portable
           pip3 install -r requirements.txt
-          python3 ./generate.py -f ../../Release/ -o . -e ../../Release/rustdesk.exe
+          python3 ./generate.py -f ../../Release/ -o . -e ../../Release/nutshelldesk.exe
           popd
           mkdir -p ./SignOutput
-          mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}-sciter.exe
+          mv ./target/release/nutshelldesk-portable-packer.exe ./SignOutput/nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}-sciter.exe
 
       - name: Sign rustdesk self-extracted file
         uses: GermanBluefox/code-sign-action@v7
@@ -286,7 +286,7 @@ jobs:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            ./SignOutput/rustdesk-*.exe
+            ./SignOutput/nutshelldesk-*.exe
 
   build-for-macOS:
     name: ${{ matrix.job.target }} (${{ matrix.job.os }}) [${{ matrix.job.extra-build-args }}]
@@ -676,7 +676,7 @@ jobs:
               # build flutter
               pushd flutter
               flutter build apk --release --target-platform android-arm64 --split-per-abi
-              mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ../rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
+              mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ../nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
             ;;
             armv7-linux-androideabi)
               mkdir -p ./flutter/android/app/src/main/jniLibs/armeabi-v7a
@@ -685,12 +685,12 @@ jobs:
               # build flutter
               pushd flutter
               flutter build apk --release --target-platform android-arm --split-per-abi
-              mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ../rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
+              mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ../nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
             ;;
           esac
           popd
           mkdir -p signed-apk; pushd signed-apk
-          mv ../rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk .
+          mv ../nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk .
 
       - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
@@ -710,7 +710,7 @@ jobs:
         if: env.ANDROID_SIGNING_KEY != null && env.UPLOAD_ARTIFACT == 'true'
         uses: actions/upload-artifact@master
         with:
-          name: rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
+          name: nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
           path: ${{steps.sign-rustdesk.outputs.signedReleaseFile}}
 
       - name: Publish signed apk package
@@ -729,7 +729,7 @@ jobs:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            signed-apk/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
+            signed-apk/nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
 
   build-rustdesk-lib-linux-amd64:
     needs: [generate-bridge-linux]
