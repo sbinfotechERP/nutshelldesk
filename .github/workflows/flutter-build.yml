@@ -144,7 +144,7 @@ jobs:
           python3 ./generate.py -f ../../flutter/build/windows/runner/Release/ -o . -e ../../flutter/build/windows/runner/Release/nutshelldesk.exe
           popd
           mkdir -p ./SignOutput
-          mv ./target/release/nutshelldesk-portable-packer.exe ./SignOutput/nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/nutshelldesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
 
       - name: Sign rustdesk self-extracted file
         uses: GermanBluefox/code-sign-action@v7
