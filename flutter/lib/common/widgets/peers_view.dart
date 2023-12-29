@@ -20,8 +20,8 @@ typedef PeerFilter = bool Function(Peer peer);
 typedef PeerCardBuilder = Widget Function(Peer peer);
 
 class PeerSortType {
-  static const String remoteId = 'Remote ID';
-  static const String remoteHost = 'Remote Host';
+  static const String remoteId = 'Desk Remote ID';
+  static const String remoteHost = 'Desk Remote Host';
   static const String username = 'Username';
   // static const String status = 'Status';
 
