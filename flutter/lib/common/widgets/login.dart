@@ -375,7 +375,7 @@ class LoginWidgetUserPass extends StatelessWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       onPressed:
-                          curOP.value.isEmpty || curOP.value == 'rustdesk'
+                          curOP.value.isEmpty || curOP.value == 'nutshelldesk'
                               ? () {
                                   onLogin();
                                 }
